@@ -1,0 +1,714 @@
+:root {
+  --primary: #ffc107;
+  --bg: #102a43;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  text-decoration: none;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #000;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
+  color: #fff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 7%;
+  background-color: rgba(0, 0, 0, 1);
+  border-bottom: 1px solid var(--primary);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* z-index: 2000; */
+}
+
+.navbar .navbar-logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #FFF;
+}
+
+.navbar .navbar-logo span {
+  color: var(--primary);
+  font-style: italic;
+}
+
+.navbar .navbar-nav a {
+  color: #FFF;
+  display: inline-block;
+  font-size: 1.2rem;
+  margin: 0 1rem;
+}
+
+.navbar .navbar-nav a:hover {
+  color: var(--primary);
+}
+
+.navbar .navbar-nav a::after {
+  content: '';
+  display: block;
+  padding-bottom: 0.2rem;
+  border-bottom: 0.1rem solid var(--primary);
+  transform: scaleX(0);
+  transition: 0.2s linear;
+}
+
+.navbar .navbar-nav a:hover::after {
+  transform: scaleX(0.5);
+}
+
+.navbar .navbar-nav .nav-link:active {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+}
+
+.navbar.navbar-extra a {
+  color: #FFF;
+  margin: 0 0.5rem;
+}
+
+.navbar.navbar-extra a:hover {
+  color: var(--primary);
+}
+
+/* Desktop besar (Full HD ke atas) */
+@media (min-width: 1440px) {
+  html {
+    font-size: 80%; /* sekitar 12.8px */
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: 90%; /* sekitar 14.4px */
+  }
+}
+
+/* Laptop */
+@media (max-width: 1366px) {
+  html {
+    font-size: 75%;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 62.5%;
+  }
+}
+
+/* Mobile Phone */
+@media (max-width: 450px) {
+  html {
+    font-size: 55%;
+  }
+}
+
+/* Hero */
+.hero-index {
+  height: 100vh;
+  display: flex;
+  background-size: cover;
+  background-position: center;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('../img/langit.jpg') center center / cover no-repeat;
+}
+
+.hero-index h1 {
+  line-height: 1.4;
+  font-size: 2.8rem;
+}
+
+.hero-index .highlight {
+  color: var(--primary);
+}
+
+.hero-index p {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* button */
+.btn-warning {
+  background-color: var(--primary);
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+}
+
+.btn-warning:hover {
+  background-color: var(--primary);
+  color: black;
+}
+
+.btn-outline-light {
+  padding: 10px 20px;
+  border-radius: 30px;
+}
+
+.container-fitur {
+  display: flex;
+  margin: 0;
+  margin-top: 50px;
+}
+/* section */
+.section-programs {
+  padding: 60px 0;
+  background-color: #f8f9fa;
+}
+
+/* Program Section */
+.program-tahsin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: radial-gradient(circle at top, #102a43, #0b1a29);
+  position: relative;
+  overflow: hidden;
+  padding: 100px;
+}
+
+.program-tahsin1 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #000000;
+  position: relative;
+  overflow: hidden;
+  padding: 100px;
+}
+
+.program-tahsin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.program-tahsin h2 {
+  color: #ffd369;
+  text-shadow: 0 0 15px rgba(255, 215, 100, 0.3);
+}
+
+.program-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 30px 20px;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+  transition: all 0.4s ease;
+}
+
+.program-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.program-card h5 {
+  margin-top: 15px;
+  color: #ffd369;
+  font-weight: 600;
+}
+
+.program-card p {
+  font-size: 0.9rem;
+  color: #e5e5e5;
+  margin-top: 10px;
+}
+
+/* icon - card */
+.icon-wrapper {
+  font-size: 2rem;
+  color: #ffd369;
+  margin-bottom: 10px;
+}
+
+.highlight-card {
+  border: 1px solid rgba(255, 215, 100, 0.6);
+  background: linear-gradient(145deg, rgba(255, 215, 100, 0.15), rgba(255, 255, 255, 0.08));
+  box-shadow: 0 0 25px rgba(255, 215, 100, 0.25);
+}
+
+.row .col-md-4 {
+  display: flex;
+}
+
+
+/* ===============================
+   About Page - Tahsin Aqsyanna
+   =============================== */
+
+.about-page {
+  font-family: 'Inter', 'Poppins', sans-serif;
+  background: linear-gradient(180deg, #0f172a 0%, #071029 60%);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.7;
+}
+
+/* HEADER */
+.about-header {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.about-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.about-header .logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.about-header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.about-header .subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* MAIN */
+.about-page .wrap {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 28px;
+}
+
+.about-page .hero {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.about-page .card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(6px);
+}
+
+.about-page .lead {
+  font-size: 1.02rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 18px;
+}
+
+/* FEATURES */
+.about-page .features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.about-page .feature {
+  padding: 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.about-page .feature h4 {
+  margin-bottom: 6px;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.about-page .feature p {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+}
+
+/* STATS */
+.about-page .stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-page .stat {
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.12), rgba(124, 58, 237, 0.06));
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  text-align: center;
+}
+
+.about-page .stat h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #fff;
+}
+
+.about-page .stat p {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* -----------------------------
+   ABOUT PAGE: VISI & MISI
+------------------------------ */
+.about-page .section-visi-misi {
+  background: radial-gradient(circle at top, #0b1a29, #060b14);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-page .section-visi-misi::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+  opacity: 0.05;
+  z-index: 0;
+}
+
+.about-page .section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffd369;
+  text-shadow: 0 0 10px rgba(255, 215, 100, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.about-page .highlight {
+  color: #ffc107;
+}
+
+.about-page .section-subtitle {
+  color: #ddd;
+  max-width: 700px;
+  margin: 0 auto;
+  z-index: 1;
+  position: relative;
+}
+
+.visi-card,
+.misi-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 215, 100, 0.2);
+  border-radius: 20px;
+  padding: 40px 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.visi-card:hover,
+.misi-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(255, 215, 100, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.about-page .icon-wrapper {
+  font-size: 2.5rem;
+  color: #ffd369;
+}
+
+.about-page .misi-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-page .misi-list li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 25px;
+  color: #e5e5e5;
+}
+
+.about-page .misi-list li::before {
+  content: "•";
+  color: #ffd369;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+
+/* FOOTER */
+.about-page footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.about-page footer strong {
+  color: #fff;
+}
+
+.about-page footer p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+/* footer */
+.footer {
+  background-color: #0d0d0d;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Warna link dan hover */
+.footer-link {
+  color: #ccc;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #ffc107;
+  padding-left: 3px;
+}
+
+.footer .contact-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.footer .contact-list i {
+  font-size: 16px;
+  margin-right: 12px;
+  margin-top: 3px;
+  min-width: 20px;
+  color: #ccc;
+  text-align: center;
+}
+
+.footer .contact-list span {
+  line-height: 1.5;
+  display: inline-block;
+
+}
+
+.footer .row {
+  display: flex;
+  align-items: flex-start;
+  /* semua kolom sejajar dari atas */
+  flex-wrap: wrap;
+}
+
+.footer .col-md-3,
+.footer .col-md-6 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+/* Ikon sosial */
+.social-link {
+  font-size: 26px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-link:hover {
+  color: #ffc107;
+  transform: translateY(-5px);
+}
+
+.social-container {
+  gap: 1.8rem;
+  /*jarak antar icon kanan kiri*/
+}
+
+/* Wa */
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 20px;
+  right: 20px;
+  background-color: #25d366;
+  color: #FFF;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 35px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  transition: transform 0.3s;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  color: #FFF;
+  text-decoration: none;
+}
+
+.whatsapp-float i {
+  line-height: 60px;
+  /* agar ikon tepat di tengah bulatan */
+}
+
+/* ===============================
+   Testimoni Page - Tahsin Aqsyanna
+   =============================== */
+
+body.testimoni-page {
+  background: radial-gradient(circle at top, #0a1224, #060b14);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Section */
+.section-testimoni {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(255, 215, 100, 0.1), rgba(0, 0, 0, 0.5));
+}
+
+.section-testimoni::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+  opacity: 0.04;
+  z-index: 0;
+}
+
+.section-testimoni .section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffd369;
+  text-shadow: 0 0 15px rgba(255, 215, 100, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.section-testimoni .section-subtitle {
+  max-width: 700px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.05rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Testimoni Card */
+.testi-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.testi-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 35px rgba(255, 215, 100, 0.15);
+}
+
+/* Rasio video 9:16 */
+.testi-video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  object-position: top center;
+  /* ⬅️ fokuskan bagian atas video */
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+.testi-title {
+  color: #ffd369;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.testi-desc {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Responsiveness */
+@media (max-width: 992px) {
+  .section-testimoni .section-title {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .testi-card {
+    padding: 18px 15px;
+  }
+}
+
+/* Update Data Modal Window */
+.modal {
+  z-index: 9999 !important;
+}
+.modal-body {
+  z-index: 9000 !important;
+}
