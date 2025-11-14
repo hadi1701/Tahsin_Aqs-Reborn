@@ -1,7 +1,10 @@
 <?php
-require_once "../module/dbconnect.php";
+if(!isset($_SESSION)){
+    session_start();
+}
 
-if (!isset($_SESSION)) session_start();
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
 
 $success = '';
 $error = '';

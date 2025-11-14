@@ -1,11 +1,11 @@
 <?php
-require_once '../module/dbconnect.php';
-session_start();
-
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
 
 $user_id = $_SESSION['user_id'];
 $stmt = db()->prepare("SELECT pertemuan_ke, materi, catatan, tanggal_input

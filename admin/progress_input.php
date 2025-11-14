@@ -1,6 +1,10 @@
 <?php
-require_once '../module/dbconnect.php';
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
+
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
 
 // Ambil 10 santri pertama
 $stmt = db()->prepare("SELECT id, nama FROM daftar LIMIT 10");
@@ -45,12 +49,12 @@ if (isset($_POST['submit'])) {
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($santriList as $s): ?>
+            <?php foreach ($santriList as $key): ?>
                 <tr>
-                    <td><?= htmlspecialchars($s['nama']) ?></td>
-                    <td><input type="number" name="progress[<?= $s['id'] ?>][pertemuan_ke]" class="form-control" required></td>
-                    <td><input type="text" name="progress[<?= $s['id'] ?>][materi]" class="form-control" required></td>
-                    <td><input type="text" name="progress[<?= $s['id'] ?>][catatan]" class="form-control"></td>
+                    <td><?= htmlspecialchars($key['nama']) ?></td>
+                    <td><input type="number" name="progress[<?= $key['id'] ?>][pertemuan_ke]" class="form-control" required></td>
+                    <td><input type="text" name="progress[<?= $key['id'] ?>][materi]" class="form-control" required></td>
+                    <td><input type="text" name="progress[<?= $key['id'] ?>][catatan]" class="form-control"></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

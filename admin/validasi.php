@@ -3,12 +3,6 @@ if(!isset($_SESSION)){
     session_start();
 }
 
-if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
-    session_destroy(); // hapus semua session
-    header("Location: login.php");
-    exit; // sangat penting agar kode di bawahnya tidak tetap dijalankan
-}
-
 require_once '../module/dbconnect.php';
 
 // Ambil data pembayaran + nama user dari tabel daftar
@@ -98,69 +92,81 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
           <!-- Content wrapper -->
             <div class="content-wrapper">
             <!-- Content -->
-                <div class="container mt-4 p-4">
-                    <h2 class="mb-4 d-flex justify-content-center">Validasi Pembayaran</h2>
-
-                    <?php if (isset($_GET['msg'])): ?>
-                        <div class="alert alert-success"><?= htmlspecialchars($_GET['msg']) ?></div>
-                    <?php endif; ?>
-                    
-                    <table class="table table-bordered table-striped align-middle">
-                        <thead class="table-dark ">
-                            <tr class="text-center text-white">
-                                <th>ID</th>
-                                <th>Nama</th>
-                                <th>Foto</th>
-                                <th>Status Paid</th>
-                                <th>Status Active</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($pembayaranData)): ?>
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted">Belum ada data pembayaran.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach($pembayaranData as $row): ?>
-                                <tr class="text-center">
-                                    <td><?= htmlspecialchars($row['id']) ?></td>
-                                    <td><?= htmlspecialchars($row['nama']) ?></td>
-                                    <td>
-                                        <?php if($row['foto']): ?>
-                                            <a href="../img/<?= htmlspecialchars($row['foto']) ?>" target="_blank">
-                                                <img src="../img/<?= htmlspecialchars($row['foto']) ?>" alt="Bukti" width="60" class="rounded shadow-sm">
-                                            </a>
+                <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="mb-4 d-flex justify-content-center">Validasi Pembayaran</h2>
+                            </div>
+                        
+                            <div class="card-body">
+                                <?php if (isset($_GET['msg'])): ?>
+                                    <div class="alert alert-success"><?= htmlspecialchars($_GET['msg']) ?></div>
+                                <?php endif; ?>
+                                
+                                <table class="table table-bordered table-striped align-middle">
+                                    <thead class="table-dark ">
+                                        <tr class="text-center text-white">
+                                            <th>ID</th>
+                                            <th>Nama</th>
+                                            <th>Foto</th>
+                                            <th>Status Paid</th>
+                                            <th>Status Active</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if (empty($pembayaranData)): ?>
+                                            <tr>
+                                                <td colspan="6" class="text-center text-muted">Belum ada data pembayaran.</td>
+                                            </tr>
                                         <?php else: ?>
-                                            <span class="text-muted">-</span>
+                                            <?php foreach($pembayaranData as $row): ?>
+                                            <tr class="text-center">
+                                                <td><?= htmlspecialchars($row['id']) ?></td>
+                                                <td><?= htmlspecialchars($row['nama']) ?></td>
+                                                <td>
+                                                    <?php if($row['foto']): ?>
+                                                        <a href="../img/<?= htmlspecialchars($row['foto']) ?>" target="_blank">
+                                                            <img src="../img/<?= htmlspecialchars($row['foto']) ?>" alt="Bukti" width="60" class="rounded shadow-sm">
+                                                        </a>
+                                                    <?php else: ?>
+                                                        <span class="text-muted">-</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if ($row['is_paid']): ?>
+                                                        <span class="badge bg-primary">Sudah</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-secondary">Belum</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <?php if ($row['is_active']): ?>
+                                                        <span class="badge bg-primary">Aktif</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-danger">Nonaktif</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <!-- Tombol Update -->
+                                                    <button class="btn btn-sm btn-success btn-validasi" data-id="<?= $row['user_id'] ?>" data-nama="<?= htmlspecialchars($row['nama']) ?>">
+                                                    Update
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
                                         <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($row['is_paid']): ?>
-                                            <span class="badge bg-primary">Sudah</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-secondary">Belum</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($row['is_active']): ?>
-                                            <span class="badge bg-primary">Aktif</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-danger">Nonaktif</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <!-- Tombol Update -->
-                                        <button class="btn btn-sm btn-success btn-validasi" data-id="<?= $row['user_id'] ?>" data-nama="<?= htmlspecialchars($row['nama']) ?>">
-                                        Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+                
+                
             
             <!-- / Content -->
 
@@ -230,8 +236,7 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script src="../module/js/setDaftar.js"></script>
     <!-- Font Awesome untuk ikon -->

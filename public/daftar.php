@@ -3,7 +3,8 @@ if(!isset($_SESSION)){
     session_start();
 }
 
-require_once '../module/dbconnect.php';
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
 
 $stmt = db()->prepare('SELECT * FROM daftar');
 $stmt -> execute();

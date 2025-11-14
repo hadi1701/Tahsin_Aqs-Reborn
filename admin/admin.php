@@ -1,12 +1,16 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+    session_start();
+}
+
+require_once $_SESSION["dir_root"] . '../module/dbconnect.php';
+
 if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
     session_destroy(); // hapus semua session
     header("Location: login.php");
     exit; // sangat penting agar kode di bawahnya tidak tetap dijalankan
 }
 
-require_once '../module/dbconnect.php';
 ?>
   
 <!DOCTYPE html>

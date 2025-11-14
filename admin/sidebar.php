@@ -103,8 +103,8 @@
             </a>
             <ul class="menu-sub">
             <li class="menu-item">
-                <a href="auth-login-basic.html" class="menu-link" target="_blank">
-                <div data-i18n="Basic">Login</div>
+                <a href="progress_input.php" class="menu-link">
+                <div data-i18n="Basic">Progress Peserta</div>
                 </a>
             </li>
             <li class="menu-item">

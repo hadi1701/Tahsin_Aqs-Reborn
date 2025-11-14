@@ -1,6 +1,11 @@
 <?php
+if(!isset($_SESSION)){
     session_start();
+}
 
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
+    
     // contoh data login (nanti bisa diambil dari DB)
     if (!isset($_SESSION['username'])) {
         $_SESSION['username'];
