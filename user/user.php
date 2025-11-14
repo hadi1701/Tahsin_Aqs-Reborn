@@ -1,10 +1,7 @@
 <?php
-if(!isset($_SESSION)){
-    session_start();
-}
+session_start();
 
-require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-$site_root = $_SESSION["site_root"];
+require_once '../module/dbconnect.php';
     
     // contoh data login (nanti bisa diambil dari DB)
     if (!isset($_SESSION['username'])) {
@@ -105,7 +102,7 @@ $username = $_SESSION['username'];
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item"><a href="#" class="nav-link">Beranda</a></li>
+            <li class="nav-item"><a href="progress.php" class="nav-link">Progress</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Program</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Profil</a></li>
             <li class="nav-item"><a href="login.php" class="btn btn-warning text-dark ms-3">Logout</a></li>

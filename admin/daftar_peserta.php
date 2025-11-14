@@ -5,6 +5,8 @@ if(!isset($_SESSION)){
 
 require_once '../module/dbconnect.php';
 
+
+
 $stmt = db()->prepare('SELECT * FROM daftar');
 $stmt->execute();
 $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);

@@ -10,11 +10,11 @@ try {
     // ===================== READ =====================
     if ($method === 'GET') {
         if (isset($_GET['id'])) {
-            $stmt = $pdo->prepare("SELECT id, username, nama, usia, gender, no_wa, komunitas FROM daftar WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT id, username, email, nama, usia, gender, no_wa, komunitas FROM daftar WHERE id = ?");
             $stmt->execute([$_GET['id']]);
             $data = $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
-            $stmt = $pdo->query("SELECT id, username, nama, usia, gender, no_wa, komunitas FROM daftar ORDER BY id DESC");
+            $stmt = $pdo->query("SELECT id, username, email, nama, usia, gender, no_wa, komunitas FROM daftar ORDER BY id DESC");
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
@@ -26,6 +26,7 @@ try {
     if ($method === 'POST') {
         $id        = $_POST['id'] ?? '';
         $username  = trim($_POST['username'] ?? '');
+        $email     = trim($_POST['email'] ?? '');
         $password  = $_POST['password'] ?? '';
         $nama      = trim($_POST['nama'] ?? '');
         $usia      = trim($_POST['usia'] ?? '');
@@ -36,7 +37,7 @@ try {
         // ===================== VALIDASI =====================
         if ($id === '') {
             // INSERT
-            if (in_array('', [$username, $password, $nama, $usia, $gender, $no_wa, $komunitas], true)) {
+            if (in_array('', [$username, $email, $password, $nama, $usia, $gender, $no_wa, $komunitas], true) || $komunitas == "") {
                 echo json_encode(['status' => 'error', 'message' => 'Data tidak lengkap!']);
                 exit;
             }
@@ -53,8 +54,8 @@ try {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
             //simpan ke table daftar
-            $stmt = $pdo->prepare("INSERT INTO daftar (username, password, nama, usia, gender, no_wa, komunitas) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$username, $hashed, $nama, $usia, $gender, $no_wa, $komunitas]);
+            $stmt = $pdo->prepare("INSERT INTO daftar (username, email, password, nama, usia, gender, no_wa, komunitas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$username, $email, $hashed, $nama, $usia, $gender, $no_wa, $komunitas]);
 
             //ambil id user terakhir
             $userId = $pdo->lastInsertId();
@@ -85,13 +86,13 @@ try {
 
             if (trim($password) === '') {
                 // update tanpa ubah password
-                $stmt = $pdo->prepare("UPDATE daftar SET username=?, nama=?, usia=?, gender=?, no_wa=?, komunitas=? WHERE id=?");
-                $stmt->execute([$username, $nama, $usia, $gender, $no_wa, $komunitas, $id]);
+                $stmt = $pdo->prepare("UPDATE daftar SET username=?, email=?, nama=?, usia=?, gender=?, no_wa=?, komunitas=? WHERE id=?");
+                $stmt->execute([$username, $email, $nama, $usia, $gender, $no_wa, $komunitas, $id]);
             } else {
                 // update + hash password baru
                 $hashed = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("UPDATE daftar SET username=?, password=?, nama=?, usia=?, gender=?, no_wa=?, komunitas=? WHERE id=?");
-                $stmt->execute([$username, $hashed, $nama, $usia, $gender, $no_wa, $komunitas, $id]);
+                $stmt = $pdo->prepare("UPDATE daftar SET username=?, email=?, password=?, nama=?, usia=?, gender=?, no_wa=?, komunitas=? WHERE id=?");
+                $stmt->execute([$username, $email, $hashed, $nama, $usia, $gender, $no_wa, $komunitas, $id]);
             }
 
             echo json_encode(['status' => 'success', 'message' => 'Data berhasil diperbarui']);

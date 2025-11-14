@@ -1,13 +1,16 @@
 <?php
-if (!isset($_SESSION['user_id'])) {
+session_start(); // selalu di awal
+
+if(!isset($_SESSION['user_id'])){
+    // kalau user belum login, redirect ke login
     header("Location: login.php");
     exit;
 }
 
-require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-$site_root = $_SESSION["site_root"];
+require_once '../module/dbconnect.php';
 
 $user_id = $_SESSION['user_id'];
+
 $stmt = db()->prepare("SELECT pertemuan_ke, materi, catatan, tanggal_input
                        FROM progress_santri
                        WHERE user_id = ?

@@ -4,6 +4,7 @@ $(document).ready(function(){
 
         const formData = {
             username: $("#username").val(),
+            email: $("#email").val(),
             password: $("#password").val(),
             nama: $("#nama").val(),
             usia: $("#usia").val(),
@@ -58,6 +59,7 @@ $(document).ready(function(){
 
                     //isi field di modal dengan data dari database
                     $("#modalUpdate #username").val(data.username);
+                    $("#modalUpdate #email").val(data.email);
                     $('#modalUpdate #password').val(data.password);
                     $("#modalUpdate #nama").val(data.nama);
                     $("#modalUpdate #usia").val(data.usia);
