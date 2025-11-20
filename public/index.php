@@ -3,8 +3,10 @@ if (isset($_SESSION)) {
     session_destroy();
     session_regenerate_id(true);
 }
+
 session_start();
 require_once "bootstrap.php";
+
 ?>
 
 <!DOCTYPE html>

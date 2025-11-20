@@ -1,17 +1,27 @@
 <?php
-if(!isset($_SESSION)){
-    session_start();
+session_start();
+
+require_once "../public/bootstrap.php";
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
+
+$pdo = db();
+
+//cek session admin
+if(!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+  //jika bukan admin atau belum login, lempar ke login
+  header('Location: ../public/login.php');
+  exit;
 }
 
-require_once $_SESSION["dir_root"] . '../module/dbconnect.php';
-
-if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
-    session_destroy(); // hapus semua session
-    header("Location: login.php");
-    exit; // sangat penting agar kode di bawahnya tidak tetap dijalankan
-}
-
+// ambil data admin
+$stmt = $pdo->prepare("SELECT username FROM admin WHERE id = ?");
+$stmt->execute([$_SESSION['admin_id']]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$username = $row['username'] ?? 'Admin';
+$role = 'admin';
 ?>
+
   
 <!DOCTYPE html>
 
@@ -31,7 +41,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
   lang="en"
   class="light-style layout-menu-fixed"
   dir="ltr"
-  data-theme="theme-default"
+  data-theme="theme-light"
   data-assets-path="../sneat/assets/"
   data-template="vertical-menu-template-free"
 >
@@ -76,6 +86,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
     <script src="../sneat/assets/vendor/js/helpers.js"></script>
 
     <script src="../sneat/assets/js/config.js"></script>
+    <script type="text/javascript" src="../module/js/darkmode.js" defer></script>
 </head>
 
 <body>
@@ -84,7 +95,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
       <div class="layout-container">
         <!-- Menu -->
 
-        <?php include 'sidebar.php'?>
+        <?php include '../component/sidebar.php'?>
         <!-- / Menu -->
 
         <!-- Layout container -->
@@ -92,17 +103,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
           <!-- Navbar -->
 
           
-        <?php include "nav-admin.php" ?>
+        <?php include "../component/nav-admin.php" ?>
           <!-- / Navbar -->
-
+            
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
               <section class="section text-center mt-5">
                 <div class="container">
-                  <h2 class="mb-4">Ahlan wa Sahlan, Admin Tahsinians</h2>
+                  <h2 class="mb-4">Assalamu'alaikum, <?= htmlspecialchars($username) ?></h2>
                   <p>Terus Semangat Mengejar Ridho Allah SWT 🧡</p>
-
+                    
                   <div class="row mt-5">
                     <div class="col-md-4 mb-4">
                       <div class="card h-100 shadow-sm" onclick="location.href='validasi.php'">
@@ -200,12 +211,12 @@ if (!isset($_SESSION['user_id']) || $_SESSION['roles'] != 'admin') {
     <!-- Main JS -->
     <script src="../sneat/assets/js/main.js"></script>
 
+    <script src="../sneat/assets/js/scripts.js"></script>
+
     <!-- Page JS -->
     <script src="../sneat/assets/js/dashboards-analytics.js"></script>
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

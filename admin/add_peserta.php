@@ -1,19 +1,12 @@
 <?php
 session_start();
 
-require_once "../public/bootstrap.php";
-
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
 
 
-// Ambil data pembayaran + nama user dari tabel daftar
-$stmt = db()->prepare('
-    SELECT p.id, p.user_id, p.is_paid, p.is_active, p.foto, d.nama
-    FROM pembayaran p
-    JOIN daftar d ON p.user_id = d.id
-');
+$stmt = db()->prepare('SELECT * FROM daftar');
 $stmt->execute();
-$pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
+$rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +26,7 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     />
     <title>Validasi Pembayaran</title>
     <meta name="description" content="" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../sneat/assets/img/favicon/favicon.ico" />
@@ -66,12 +60,10 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     <script src="../sneat/assets/js/config.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script type="text/javascript" src="../module/js/darkmode.js" defer></script>
-
 
     <style>
         .table thead.table-dark th {
@@ -99,85 +91,79 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
           <!-- Content wrapper -->
             <div class="content-wrapper">
             <!-- Content -->
-                <div class="container-xxl flex-grow-1 container-p-y">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="">Validasi Pembayaran</h3>
-                                </div>
-                            
-                                <div class="card-body">
-                                    <?php if (isset($_GET['msg'])): ?>
-                                        <div class="alert alert-success"><?= htmlspecialchars($_GET['msg']) ?></div>
-                                    <?php endif; ?>
-                                    
-                                    <table class="table table-bordered">
-                                        <thead class="table-primary ">
-                                            <tr class="text-center text-white">
-                                                <th>ID</th>
-                                                <th>Nama</th>
-                                                <th>Foto</th>
-                                                <th>Status Paid</th>
-                                                <th>Status Active</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php $i = 1; ?>
-                                            <?php if (empty($pembayaranData)): ?>
-                                                <tr>
-                                                    <td colspan="6" class="text-center text-muted">Belum ada data pembayaran.</td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <?php foreach($pembayaranData as $row): ?>
-                                                <tr class="text-center">
 
-                                                    <td class="text-center"><?=  $i ?> </td>
-                                                    <td><?= htmlspecialchars($row['nama']) ?></td>
-                                                    <td>
-                                                        <?php if($row['foto']): ?>
-                                                            <a href="../img/pembayaran/<?= htmlspecialchars($row['foto']) ?>" target="_blank">
-                                                                <img src="../img/pembayaran/<?= htmlspecialchars($row['foto']) ?>" alt="Bukti" width="60" class="rounded shadow-sm">
-                                                            </a>
-                                                        <?php else: ?>
-                                                            <span class="text-muted">-</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($row['is_paid']): ?>
-                                                            <span class="badge bg-primary">Sudah</span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-secondary">Belum</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($row['is_active']): ?>
-                                                            <span class="badge bg-primary">Aktif</span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-danger">Nonaktif</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <!-- Tombol Update -->
-                                                        <button class="btn btn-sm btn-success btn-validasi" data-id="<?= $row['user_id'] ?>" data-nama="<?= htmlspecialchars($row['nama']) ?>">
-                                                        Update
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <?php $i++; ?>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+            <div class="container-xxl flex-grow-1 container-p-y">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Tambah Data Peserta</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="col-12 mb-3">
+                                    
+                                    <form id="formAdd" class="mb-3" action="" method="POST">    
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                                        </div>
+    
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                                        </div>
+    
+                                        
+                                        <div class="mb-3 form-password-toggle">
+                                            <label class="form-label" for="password">Password</label>
+                                            <div class="input-group input-group-merge">
+                                              <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                              aria-describedby="password" required>
+                                              <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                          </div>
+                                        </div>
+    
+                                        <div class="mb-3">
+                                            <label class="form-label" for="nama">Nama Lengkap</label>
+                                            <input type="text" id="nama" class="form-control" placeholder="Enter your name" name="nama" required>
+                                        </div>
+    
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label" for="usia">Usia</label>
+                                            <input type="text" id="usia" class="form-control" placeholder="Enter your age" name="usia" required>
+                                        </div>
+    
+                                        <div class="mb-3">
+                                            <label class="form-label">Jenis Kelamin</label><br>
+                                            <input id="genderL" type="radio" name="gender" value="Laki-Laki" require> Pria
+                                            <input id="genderP" type="radio" name="gender" value="Perempuan" class="ms-3" required> Wanita
+                                        </div>
+    
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label" for="no_wa">No. WhatsApp</label>
+                                            <input type="text" id="no_wa" class="form-control" name="no_wa" placeholder="Enter your number" required>
+                                        </div>
+    
+                                        <div class="mb-3">
+                                            <label class="form-label">Asal Komunitas</label>
+                                            <select id="komunitas" class="form-select" name="komunitas" required>
+                                            <option value="">-- Pilih Komunitas --</option>
+                                            <option value="MICA">MICA</option>
+                                            <option value="UMUM">UMUM</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" id="btn-submit-peserta" class="btn btn-primary d-grid w-30 mt-4">Tambah</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                
-            
+            </div>
             <!-- / Content -->
 
             <!-- Footer -->
@@ -224,7 +210,7 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
+    
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="../sneat/assets/vendor/libs/jquery/jquery.js"></script>
@@ -247,11 +233,10 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-
-    <script src="../module/js/setDaftar.js"></script>
     <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    
+    <script src="../module/js/setAddPeserta.js"></script>
 
 </body>
 </html>

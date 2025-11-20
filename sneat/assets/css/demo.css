@@ -2,6 +2,89 @@
 * demo.css
 * File include item demo only specific css only
 ******************************************************************************/
+/* ===========================
+   THEME COLOR VARIABLES
+   =========================== */
+:root {
+  --base-color: white;
+  --base-variant: #e8e9ed;
+  --text-color: #111528;
+  --secondary-text: #232738;
+  --primary-color: #3a435d;
+  --accent-color: #0071ff;
+
+  --transition-speed: 0.25s;
+}
+
+/* Dark Mode Variables */
+.darkmode {
+  --base-color: #070b1d;
+  --base-variant: #101425;
+  --text-color: #ffffff;
+  --secondary-text: #3a435d;
+  --primary-color: #3a435d;
+  --accent-color: #0071ff;
+}
+
+/* ===========================
+   BODY STYLING
+   =========================== */
+body {
+  background-color: var(--base-color);
+  color: var(--text-color);
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed);
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* ===========================
+   THEME SWITCH BUTTON
+   =========================== */
+#theme-switch {
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--base-variant);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  transition: background-color var(--transition-speed);
+}
+
+/* SVG inside button */
+#theme-switch svg,
+#theme-switch span svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--primary-color);
+  transition: fill var(--transition-speed);
+}
+
+/* ===========================
+   ICON VISIBILITY CONTROL
+   =========================== */
+
+/* Default: show light icon, hide dark icon */
+#theme-switch .icon-light { display: block; }
+#theme-switch .icon-dark  { display: none; }
+
+/* Dark Mode: reverse visibility */
+.darkmode #theme-switch .icon-light { display: none; }
+.darkmode #theme-switch .icon-dark  { display: block; }
+
+
 
 .menu .app-brand.demo {
   height: 64px;

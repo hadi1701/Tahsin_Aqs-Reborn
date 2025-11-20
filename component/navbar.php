@@ -19,13 +19,13 @@
           <a class="nav-link" href="../public/testimoni.php">Testimoni</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Media</a>
+          <a class="nav-link" href="../public/media.php">Media</a>
         </li>
       </ul>
 
       <!-- Tombol Login & Daftar -->
       <div class="d-flex ms-auto mt-2 mt-lg-0">
-        <a href="../public/login_sneat.php" class="btn btn-outline-light btn-sm me-2">🚀 Login Member</a>
+        <a href="../public/login.php" class="btn btn-outline-light btn-sm me-2">🚀 Login Member</a>
         <a href="../public/daftar.php" class="btn btn-warning btn-sm">Daftar Sekarang</a>
       </div>
     </div>

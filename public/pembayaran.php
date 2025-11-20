@@ -1,12 +1,8 @@
 <?php
-if(!isset($_SESSION)){
-    session_start();
-}
+session_start();
 
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-$site_root = $_SESSION["site_root"];
 
-$success = '';
 $error = '';
 
 // ---------------------------
@@ -16,176 +12,197 @@ if (!isset($_SESSION['user_id'])) {
     $error = 'Anda belum bisa login. Silakan ke halaman pembayaran terlebih dahulu.';
 }
 
-// ---------------------------
-// 2️⃣ Aksi: Admin validasi pembayaran
-// URL contoh: pembayaran.php?action=update&id=5
-// ---------------------------
-if (isset($_GET['action']) && $_GET['action'] === 'update' && isset($_GET['id'])) {
-    $pdo = db();
-    $userId = $_GET['id'];
-
-    // Cek apakah data pembayaran ada
-    $stmt = $pdo->prepare("SELECT * FROM pembayaran WHERE user_id = ?");
-    $stmt->execute([$userId]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($row) {
-        // Update status pembayaran
-        $update = $pdo->prepare("UPDATE pembayaran SET is_paid = 1, is_active = 1 WHERE user_id = ?");
-        $update->execute([$userId]);
-
-        echo "<script>alert('Status pembayaran dan aktivasi berhasil diperbarui!'); window.location.href='../public/validasi.php';</script>";
-        exit;
-    } else {
-        echo "<script>alert('Data pembayaran tidak ditemukan!'); window.location.href='../public/validasi.php';</script>";
-        exit;
-    }
-}
-
-// ---------------------------
-// 3️⃣ Aksi: User upload bukti transfer
-// ---------------------------
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $pdo = db();
-
-        if (!isset($_SESSION['user_id'])) {
-            $error = 'User belum login.';
-        } else {
-            $userId = $_SESSION['user_id'];
-
-            // Cek file upload
-            if (!isset($_FILES['bayar']) || $_FILES['bayar']['error'] !== UPLOAD_ERR_OK) {
-                $error = 'File belum dipilih atau gagal diupload!';
-            } else {
-                $allowed = ['jpg', 'jpeg', 'png', 'pdf'];
-                $ext = strtolower(pathinfo($_FILES['bayar']['name'], PATHINFO_EXTENSION));
-
-                if (!in_array($ext, $allowed)) {
-                    $error = 'Hanya file JPG, PNG, atau PDF yang diizinkan!';
-                } else {
-                    $targetDir = "../img/";
-                    if (!is_dir($targetDir)) mkdir($targetDir, 0777, true);
-
-                    $filename = uniqid('bayar_') . '.' . $ext;
-                    $targetFile = $targetDir . $filename;
-
-                    if (!move_uploaded_file($_FILES['bayar']['tmp_name'], $targetFile)) {
-                        $error = 'Gagal menyimpan file!';
-                    } else {
-                        // Cek apakah user sudah pernah upload sebelumnya
-                        $check = $pdo->prepare("SELECT COUNT(*) FROM pembayaran WHERE user_id = ?");
-                        $check->execute([$userId]);
-                        $exists = $check->fetchColumn();
-
-                        if ($exists) {
-                            $stmt = $pdo->prepare("UPDATE pembayaran SET is_paid = 1, is_active = 0, foto = ? WHERE user_id = ?");
-                            $stmt->execute([$filename, $userId]);
-                        } else {
-                            $stmt = $pdo->prepare("INSERT INTO pembayaran (user_id, is_paid, is_active, foto) VALUES (?, 1, 0, ?)");
-                            $stmt->execute([$userId, $filename]);
-                        }
-
-                        $success = 'Bukti pembayaran berhasil diupload. Menunggu validasi Admin.';
-                    }
-                }
-            }
-        }
-
-    } catch (PDOException $e) {
-        $error = $e->getMessage();
-    }
-}
 ?>
 
-
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran</title>
-    <!-- BOOTSTRAP 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
 
-    <!-- AOS -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
 
-    <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
 
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="../css/style.css">
+    <title>Login Form</title>
 
-    <!-- JS Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
-    <?php include "../component/navbar.php"; ?>
+    <meta name="description" content="" />
 
-    <div class="container my-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-body p-4">
-                        <h2 class="text-center mb-4">Pembayaran</h2>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../sneat/assets/img/favicon/favicon.ico" />
 
-                        <!-- Alert pesan -->
-                        <?php if (!empty($success)): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <?= htmlspecialchars($success) ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php elseif (!empty($error)): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <?= htmlspecialchars($error) ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        <?php endif; ?>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
 
-                        <!-- Form Upload -->
-                        <form method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="aksi" value="upload_bukti">
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="../sneat/assets/vendor/fonts/boxicons.css" />
 
-                            <div class="mb-3">
-                                <p class="text-muted small">
-                                    Terima kasih telah mendaftar.<br>
-                                    Silakan transfer biaya pendaftaran ke:<br>
-                                    <strong>No. Rekening: 72304912 a.n. Fulan bin Fulan</strong>
-                                </p>
-                            </div>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="../sneat/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="../sneat/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="../sneat/assets/css/demo.css" />
 
-                            <div class="mb-3">
-                                <label for="bayar" class="form-label fw-semibold">Upload Bukti Bayar</label>
-                                <input type="file" name="bayar" id="bayar" class="form-control" required>
-                                <div class="form-text">File yang diperbolehkan: JPG, PNG, atau PDF</div>
-                            </div>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="../sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
-                            <div class="mb-3">
-                                <p class="text-muted small">
-                                    <i>Setelah mengirim formulir ini, silakan tunggu validasi dari admin.<br>
-                                    Anda dapat login setelah pembayaran disetujui.</i>
-                                </p>
-                            </div>
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="../sneat/assets/vendor/css/pages/page-auth.css" />
+    <!-- Helpers -->
+    <script src="../sneat/assets/vendor/js/helpers.js"></script>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa-solid fa-paper-plane me-1"></i> Kirim
-                                </button>
-                            </div>
-                        </form>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="../sneat/assets/js/config.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-                    </div>
+  </head>
+
+  <body>
+    <!-- Content -->
+
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <!-- Register -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="index.html" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <svg
+                      width="25"
+                      viewBox="0 0 25 42"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <defs>
+                        <path
+                          d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
+                          id="path-1"
+                        ></path>
+                        <path
+                          d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z"
+                          id="path-3"
+                        ></path>
+                        <path
+                          d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z"
+                          id="path-4"
+                        ></path>
+                        <path
+                          d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 C20.3516113,6.84704183 20.4862915,6.981722 20.6,7.13333333 Z"
+                          id="path-5"
+                        ></path>
+                      </defs>
+                      <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
+                          <g id="Icon" transform="translate(27.000000, 15.000000)">
+                            <g id="Mask" transform="translate(0.000000, 8.000000)">
+                              <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                              </mask>
+                              <use fill="#696cff" xlink:href="#path-1"></use>
+                              <g id="Path-3" mask="url(#mask-2)">
+                                <use fill="#696cff" xlink:href="#path-3"></use>
+                                <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
+                              </g>
+                              <g id="Path-4" mask="url(#mask-2)">
+                                <use fill="#696cff" xlink:href="#path-4"></use>
+                                <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
+                              </g>
+                            </g>
+                            <g
+                              id="Triangle"
+                              transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) "
+                            >
+                              <use fill="#696cff" xlink:href="#path-5"></use>
+                              <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </span>
+                  <span class="app-brand-text demo text-body fw-bolder" style="text-transform: none;">Pembayaran</span>
+                </a>
+              </div>
+              <!-- /Logo -->
+              <h4 class="mb-2">Terima kasih telah mendaftar! 🚀</h4>
+              <p class="mb-4">Silakan transfer biaya pendaftaran ke: <strong>Bank BSI<br>
+                            No. Rekening: 72304912 a.n. Fulan bin Fulan</p>
+
+              <form id="uploadForm" class="mb-3" action="" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="bayar" class="form-label fw-semibold">Upload Bukti Bayar</label>
+                    <input type="file" name="bayar" id="bayar" class="form-control" required>
+                    <div class="form-text">File yang diperbolehkan: JPG, PNG, atau PDF</div>
                 </div>
+                <div class="mb-3">
+                    <p class="text-muted small">
+                        <i>Setelah mengirim formulir ini, silakan tunggu validasi dari admin.<br>
+                        Anda dapat login setelah pembayaran disetujui.</i>
+                    </p>
+                </div>
+                <div class="mb-3">
+                  <button type="button" class="btn btn-primary d-grid w-100" id="btn-submit-payment">Kirim</button>
+                </div>
+              </form>
             </div>
+          </div>
+          <!-- /Register -->
         </div>
+      </div>
     </div>
 
-    <?php include "../component/footer.php"; ?>
+    <!-- / Content -->
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-</body>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../sneat/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../sneat/assets/vendor/libs/popper/popper.js"></script>
+    <script src="../sneat/assets/vendor/js/bootstrap.js"></script>
+    <script src="../sneat/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="../sneat/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+    <script src="../sneat/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src="../module/js/setDaftar.js"></script>
+  </body>
 </html>

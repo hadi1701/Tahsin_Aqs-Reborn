@@ -1,15 +1,9 @@
 <?php
-if(!isset($_SESSION)){
-    session_start();
-}
+session_start();
 
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-$site_root = $_SESSION["site_root"];
-
-$stmt = db()->prepare('SELECT * FROM daftar');
-$stmt -> execute();
-$rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 
 <!-- =========================================================
@@ -29,7 +23,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
   class="light-style customizer-hide"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="../sneat/assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -39,7 +33,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Registrasi</title>
+    <title>Login Form</title>
 
     <meta name="description" content="" />
 
@@ -74,6 +68,9 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../sneat/assets/js/config.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
   <body>
@@ -82,12 +79,12 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-          <!-- Register Card -->
+          <!-- Register -->
           <div class="card">
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <a href="#" class="app-brand-link gap-2">
+                <a href="index.html" class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
                     <svg
                       width="25"
@@ -143,85 +140,58 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">TahsinAqs</span>
+                  <span class="app-brand-text demo text-body fw-bolder" style="text-transform: none;">Login</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="d-flex justify-content-center mb-2">Adventure starts here 🚀</h4>
-              <p class="d-flex justify-content-center mb-4">Make your app management easy and fun!</p>
+              <h4 class="d-flex justify-content-center mb-2">Selamat Datang Tahsinians! 👋</h4>
+              <p class="d-flex justify-content-center text-center mb-4">Please sign-in to your account <br>
+                and start the adventure</p>
 
-              <form id="formDaftar" class="mb-3" action="" method="POST">
-
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                  </div>
+              <form id="formLogin" class="mb-3" action="" method="POST">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autofocus
+                    required
+                  />
                 </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-3 form-password-toggle">
+                <div class="mb-3 form-password-toggle">
+                  <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">Password</label>
-                    <div class="input-group input-group-merge">
-                      <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" required>
-                      <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                    </div>
                   </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" for="nama">Nama Lengkap</label>
-                    <input type="text" id="nama" class="form-control" placeholder="Enter your name" name="nama" required>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" for="usia">Usia</label>
-                    <input type="text" id="usia" class="form-control" placeholder="Enter your age" name="usia" required>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Jenis Kelamin</label><br>
-                    <input id="genderL" type="radio" name="gender" value="Laki-Laki" require> Pria
-                    <input id="genderP" type="radio" name="gender" value="Perempuan" class="ms-3" required> Wanita
+                  <div class="input-group input-group-merge">
+                    <input
+                      type="password"
+                      id="password"
+                      class="form-control"
+                      name="password"
+                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                      aria-describedby="password"
+                      required
+                    />
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                   </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label" for="no_wa">No. WhatsApp</label>
-                    <input type="text" id="no_wa" class="form-control" name="no_wa" placeholder="Enter your number" required>
-                  </div>
-
-                  <div class="col-md-6 mb-3">
-                    <label class="form-label">Asal Komunitas</label>
-                    <select id="komunitas" class="form-select" name="komunitas" required>
-                      <option value="">-- Pilih Komunitas --</option>
-                      <option value="MICA">MICA</option>
-                      <option value="UMUM">UMUM</option>
-                    </select>
-                  </div>
+                <div class="mb-3">
+                  <button class="btn btn-primary d-grid w-100" type="submit" name="submit">Sign in</button>
                 </div>
-
-                <button type="submit" id="btn-submit" class="btn btn-primary d-grid w-100">Sign up</button>
               </form>
 
-
               <p class="text-center">
-                <span>Already have an account?</span>
-                <a href="auth-login-basic.html">
-                  <span>Sign in instead</span>
+                <span>New on our platform?</span>
+                <a href="daftar.php">
+                  <span>Create an account</span>
                 </a>
               </p>
             </div>
           </div>
-          <!-- Register Card -->
+          <!-- /Register -->
         </div>
       </div>
     </div>
@@ -247,8 +217,11 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="../module/js/setDaftar.js"></script>
+
+    <script src="../module/js/setLogin.js"></script>
   </body>
 </html>
+
+
 
 

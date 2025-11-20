@@ -4,9 +4,9 @@ session_start();
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
 
 
-$stmt = db()->prepare('SELECT * FROM daftar');
+$stmt = db()->prepare('SELECT * FROM admin');
 $stmt->execute();
-$rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
+$rowAdmin = $stmt->fetchAll(db()::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -63,9 +63,8 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    
     <script type="text/javascript" src="../module/js/darkmode.js" defer></script>
-
 
     <style>
         .table thead.table-dark th {
@@ -87,7 +86,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
           <!-- Navbar -->
 
           
-        <?php include '../component/nav-admin.php'?>
+        <?php include "../component/nav-admin.php" ?>
           <!-- / Navbar -->
 
           <!-- Content wrapper -->
@@ -99,8 +98,8 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h2 class="mb-0">Daftar Peserta</h2>
-                                    <a href="add_peserta.php" class="btn btn-success"><i class="fa fa-plus"></i>Tambah Data</a>
+                                    <h3 class="mb-0">Daftar Admin</h3>
+                                    <a href="add_admin.php" class="btn btn-success"><i class="fa fa-plus"></i> Tambah Data</a>
                                 </div>
                                 <div class="card-body">
                                     <div class="col-12">
@@ -109,28 +108,26 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                                                 <tr class="text-center">
                                                     <th>No</th>
                                                     <th>Email</th>
-                                                    <th>Nama Lengkap</th>
+                                                    <th>Nama Lengkap</th> 
                                                     <th>Usia</th>
                                                     <th>No. WhatsApp</th>
-                                                    <th>Asal Komunitas</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php $i = 1; ?>
-                                                <?php foreach ($rowDaftar as $key): ?>
+                                                <?php foreach ($rowAdmin as $key): ?>
                                                     <tr>
                                                         <td class="text-center"><?= $i ?></td>
                                                         <td><?= htmlspecialchars($key['email']) ?></td>
                                                         <td><?= htmlspecialchars($key['nama']) ?></td>
                                                         <td><?= htmlspecialchars($key['usia']) ?></td>
                                                         <td><?= htmlspecialchars($key['no_wa']) ?></td>
-                                                        <td><?= htmlspecialchars($key['komunitas']) ?></td>
                                                         <td class="d-flex text-center d-inline gap-2">
-                                                            <button type="button" class="btn btn-sm btn-icon btn-primary btn-update" data-id="<?= $key['id'] ?>">
+                                                            <button type="button" class="btn btn-sm btn-icon btn-primary btn-update-admin" data-id="<?= $key['id'] ?>">
                                                                 <i class="fa fa-edit"></i>
                                                             </button>
-                                                            <button type="button" class="btn btn-sm btn-icon btn-danger btn-delete" data-id="<?= $key['id'] ?>">
+                                                            <button type="button" class="btn btn-sm btn-icon btn-danger btn-delete-admin" data-id="<?= $key['id'] ?>">
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </td>
@@ -145,7 +142,6 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                         </div>
                     </div>
                 </div>
-            </div>
             <!-- / Content -->
 
             <!-- Footer -->
@@ -194,19 +190,19 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- / Layout wrapper -->
     
     <!-- Modal Update -->
-    <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="modalUpdateLabel" aria-hidden="true">
+    <div class="modal fade" id="modalUpdateAdmin" tabindex="-1" aria-labelledby="modalUpdateAdminLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; overflow: hidden;">
         
         <!-- Header -->
         <div class="modal-header" style="background-color: #000;">
-            <h5 class="modal-title text-warning fw-bold d-flex align-items-center" id="modalUpdateLabel">Edit Data Registrasi</h5>
+            <h5 class="modal-title text-warning fw-bold" id="modalUpdateAdminLabel">Edit Data Registrasi</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         
         <!-- Body -->
         <div class="modal-body" style="background-color: #f8f9fa;">
-            <form id="formUpdate">
+            <form id="formUpdateAdmin">
                 <div class="mb-3">
                     <label for="id" class="form-label fw-semibold text-dark">No</label>
                     <input type="text" id="id" name="id" class="form-control border-dark" readonly>
@@ -214,6 +210,10 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                 <div class="mb-3">
                     <label for="email" class="form-label fw-semibold text-dark">Email</label>
                     <input type="text" id="email" name="email" class="form-control border-dark">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold text-dark">Password</label>
+                    <input type="password" id="password" name="password" class="form-control border-dark" placeholder="Kosongkan jika tidak ingin mengganti password">
                 </div>
 
                 <div class="mb-3">
@@ -241,11 +241,6 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
                 <div class="mb-3">
                     <label for="no_wa" class="form-label fw-semibold text-dark">No. WhatsApp</label>
                     <input type="text" id="no_wa" name="no_wa" class="form-control border-dark">
-                </div>
-
-                <div class="mb-3">
-                    <label for="komunitas" class="form-label fw-semibold text-dark">Asal Komunitas</label>
-                    <input type="text" id="komunitas" name="komunitas" class="form-control border-dark">
                 </div>
 
                 <div class="text-end mt-4">
@@ -283,7 +278,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <script src="../module/js/setDaftar.js"></script>
+    <script src="../module/js/setAdmin.js"></script>
 
 </body>
 </html>

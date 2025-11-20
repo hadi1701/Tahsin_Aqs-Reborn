@@ -1,19 +1,18 @@
 <?php
 session_start();
 
-require_once "../public/bootstrap.php";
-
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
 
-
-// Ambil data pembayaran + nama user dari tabel daftar
-$stmt = db()->prepare('
-    SELECT p.id, p.user_id, p.is_paid, p.is_active, p.foto, d.nama
-    FROM pembayaran p
-    JOIN daftar d ON p.user_id = d.id
-');
+//cek login admin
+if(!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true){
+    header('Location: ../public/login.php');
+    exit;
+}
+ 
+// Ambil semua kelas untuk dropdown
+$stmt = db()->prepare("SELECT id, name FROM classes ORDER BY name ASC");
 $stmt->execute();
-$pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
+$classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -31,8 +30,9 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <title>Validasi Pembayaran</title>
+    <title><?= htmlspecialchars($nama_kelas) ?></title>
     <meta name="description" content="" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../sneat/assets/img/favicon/favicon.ico" />
@@ -70,9 +70,6 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script type="text/javascript" src="../module/js/darkmode.js" defer></script>
-
-
     <style>
         .table thead.table-dark th {
         color: #fff !important;
@@ -99,75 +96,45 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
           <!-- Content wrapper -->
             <div class="content-wrapper">
             <!-- Content -->
+
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="">Validasi Pembayaran</h3>
+                                    <h3>Manajemen Kelas</h3>
+
+                                    <!-- Dropdown pilih kelas -->
+                                    <div class="mb-3">
+                                        <label>Pilih Kelas</label>
+                                        <select id="selectKelas" class="form-control" style="max-width:300px;">
+                                            <option value="">-- Pilih kelas --</option>
+                                            <?php foreach($classes as $key): ?>
+                                                <option value="<?= $key['id'] ?>"><?= htmlspecialchars($key['name']) ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Search murid -->
+                                    <div class="mb-3">
+                                        <label>Cari Murid (belum masuk kelas):</label>
+                                        <input type="text" id="searchMurid" class="form-control" placeholder="Ketik nama murid">
+                                        <div id="searchResult" class="mt-2"></div>
+                                    </div>
                                 </div>
-                            
                                 <div class="card-body">
-                                    <?php if (isset($_GET['msg'])): ?>
-                                        <div class="alert alert-success"><?= htmlspecialchars($_GET['msg']) ?></div>
-                                    <?php endif; ?>
-                                    
+                                    <h4>Daftar Murid Dalam Kelas</h4>
                                     <table class="table table-bordered">
-                                        <thead class="table-primary ">
-                                            <tr class="text-center text-white">
-                                                <th>ID</th>
+                                        <thead>
+                                            <tr>
                                                 <th>Nama</th>
-                                                <th>Foto</th>
-                                                <th>Status Paid</th>
-                                                <th>Status Active</th>
+                                                <th>Usia</th>
+                                                <th>No WA</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <?php $i = 1; ?>
-                                            <?php if (empty($pembayaranData)): ?>
-                                                <tr>
-                                                    <td colspan="6" class="text-center text-muted">Belum ada data pembayaran.</td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <?php foreach($pembayaranData as $row): ?>
-                                                <tr class="text-center">
-
-                                                    <td class="text-center"><?=  $i ?> </td>
-                                                    <td><?= htmlspecialchars($row['nama']) ?></td>
-                                                    <td>
-                                                        <?php if($row['foto']): ?>
-                                                            <a href="../img/pembayaran/<?= htmlspecialchars($row['foto']) ?>" target="_blank">
-                                                                <img src="../img/pembayaran/<?= htmlspecialchars($row['foto']) ?>" alt="Bukti" width="60" class="rounded shadow-sm">
-                                                            </a>
-                                                        <?php else: ?>
-                                                            <span class="text-muted">-</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($row['is_paid']): ?>
-                                                            <span class="badge bg-primary">Sudah</span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-secondary">Belum</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php if ($row['is_active']): ?>
-                                                            <span class="badge bg-primary">Aktif</span>
-                                                        <?php else: ?>
-                                                            <span class="badge bg-danger">Nonaktif</span>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td>
-                                                        <!-- Tombol Update -->
-                                                        <button class="btn btn-sm btn-success btn-validasi" data-id="<?= $row['user_id'] ?>" data-nama="<?= htmlspecialchars($row['nama']) ?>">
-                                                        Update
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <?php $i++; ?>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                        <tbody id="tableMurid">
+                                            <tr><td colspan="4" class="text-center">Silakan pilih kelas</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -175,9 +142,6 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
                         </div>
                     </div>
                 </div>
-                
-                
-            
             <!-- / Content -->
 
             <!-- Footer -->
@@ -224,6 +188,56 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
+    
+    <!-- Modal Update -->
+    <div class="modal fade" id="modalProgress" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Update Progress Murid</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formProgress">
+
+                    <input type="hidden" id="progress_daftar_id">
+                    <input type="hidden" id="progress_class_id">
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Session Number</label>
+                            <input type="number" class="form-control" id="progress_session">
+                        </div>
+
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">Materi</label>
+                            <input type="text" class="form-control" id="progress_material">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Catatan</label>
+                        <textarea class="form-control" id="progress_notes" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Solusi</label>
+                        <textarea class="form-control" id="progress_solution" rows="2"></textarea>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-primary" id="btnSaveProgress">Simpan</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -247,11 +261,10 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-
-    <script src="../module/js/setDaftar.js"></script>
     <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
+    
+    <script src="../module/js/setKelas.js"></script>
+    <script src="../module/js/setProgress.js"></script>
 </body>
 </html>

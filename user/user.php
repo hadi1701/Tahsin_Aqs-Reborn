@@ -1,14 +1,19 @@
 <?php
 session_start();
 
-require_once '../module/dbconnect.php';
-    
-    // contoh data login (nanti bisa diambil dari DB)
-    if (!isset($_SESSION['username'])) {
-        $_SESSION['username'];
-    }
+require_once "../public/bootstrap.php";
+require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION["site_root"];
 
-$username = $_SESSION['username'];
+$pdo = db();
+
+
+$stmt = $pdo->prepare("SELECT username FROM daftar WHERE id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$username = $row['username'] ?? 'User';
+$role = 'user';
+
 ?>
 
 <!DOCTYPE html>
@@ -105,7 +110,7 @@ $username = $_SESSION['username'];
             <li class="nav-item"><a href="progress.php" class="nav-link">Progress</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Program</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Profil</a></li>
-            <li class="nav-item"><a href="login.php" class="btn btn-warning text-dark ms-3">Logout</a></li>
+            <li class="nav-item"><a href="../public/login.php" class="btn btn-warning text-dark ms-3">Logout</a></li>
             </ul>
         </div>
         </div>
