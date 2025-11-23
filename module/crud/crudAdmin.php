@@ -96,7 +96,9 @@ try {
     // ===================== DELETE (via METHOD DELETE) =====================
     if ($method === 'DELETE') {
         $input= json_decode(file_get_contents("php://input"), true);
+
         $id = $input['id'] ?? '';
+        $nama = $input['nama'] ?? '';
 
         if (empty($id)) {
             echo json_encode(['status' => 'error', 'message' => 'ID tidak ditemukan']);
@@ -107,7 +109,8 @@ try {
         $stmt = $pdo->prepare("DELETE FROM admin WHERE id = ?");
         $stmt->execute([$id]);
 
-        echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+        echo json_encode(['status' => 'success', 
+        'message' => "Data admin '$nama' berhasil dihapus!"]);
         exit;
     }
 

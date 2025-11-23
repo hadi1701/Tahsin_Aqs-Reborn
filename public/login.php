@@ -1,7 +1,23 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'      => '/',
+    'secure'    => isset($_SERVER['HTTPS']),
+    'httponly'  => true,
+    'samesite'  => 'Strict'
+]);
+
 session_start();
 
-require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+if (!empty($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
+    header('Location: ../admin/admin.php');
+    exit;
+}
+
+if (!empty($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
+    header('Location: ../user/user.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +91,9 @@ require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
 
   <body>
     <!-- Content -->
-
+    <div>
+      <a href="index.php" class="btn btn-primary mt-3 mx-3">Beranda</a>
+    </div>
     <div class="container-xxl">
       <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">

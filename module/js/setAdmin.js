@@ -151,7 +151,7 @@ $(document).ready(function(){
         e.preventDefault();
 
         const id = $(this).data('id');
-        console.log('id dari: ', id);
+        const nama = $(this).data('nama');
 
         if(!id) {
             alert('Data Id tidak terbaca');
@@ -161,7 +161,7 @@ $(document).ready(function(){
         Swal.fire({
             icon: 'warning',
             title: 'Yakin?',
-            text: "Hapus data dengan ID: " + id + "?",
+            text: "Hapus data dengan nama: " + nama + "?",
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
@@ -172,7 +172,7 @@ $(document).ready(function(){
                 $.ajax({
                     url: "../module/crud/crudAdmin.php",
                     type: "DELETE",
-                    data: JSON.stringify({ id: id }), // kirim JSON body
+                    data: JSON.stringify({ id: id, nama: nama }), // kirim JSON body
                     contentType: "application/json",
                     dataType: 'json',
                     success: function(res){

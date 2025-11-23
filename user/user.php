@@ -1,5 +1,34 @@
 <?php
+
+// set cookie parameter
+session_set_cookie_params([
+    'lifetime' => 0, //habis saaat browser ditutup
+    'path' => '/',
+    'secure' => isset($_SERVER['HTTPS']),
+    'httponly' => true,
+    'samesite' => 'Strict' //proteksi akses tab baru + URL paste
+]);
+
 session_start();
+
+if (empty($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
+    header('Location: ../public/login.php');
+    exit;
+}
+
+$expected_fingerprint = md5(
+    ($_SERVER['HTTP_USER_AGENT'] ?? '') .
+    ($_SERVER['REMOTE_ADDR'] ?? '')
+);
+
+if (
+    empty($_SESSION['browser_fingerprint']) ||
+    $_SESSION['browser_fingerprint'] !== $expected_fingerprint
+) {
+    session_destroy();
+    header('Location: ../public/login.php');
+    exit;
+}
 
 require_once "../public/bootstrap.php";
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
@@ -7,13 +36,12 @@ $site_root = $_SESSION["site_root"];
 
 $pdo = db();
 
-
 $stmt = $pdo->prepare("SELECT username FROM daftar WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
 $username = $row['username'] ?? 'User';
 $role = 'user';
-
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +138,7 @@ $role = 'user';
             <li class="nav-item"><a href="progress.php" class="nav-link">Progress</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Program</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Profil</a></li>
-            <li class="nav-item"><a href="../public/login.php" class="btn btn-warning text-dark ms-3">Logout</a></li>
+            <li class="nav-item"><a href="../auth/logout.php" class="btn btn-warning text-dark ms-3">Logout</a></li>
             </ul>
         </div>
         </div>

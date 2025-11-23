@@ -1,10 +1,34 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 0, //habis saaat browser ditutup
+    'path' => '/',
+    'secure' => false,
+    'httponly' => true,
+    'samesite' => 'Strict' //proteksi akses tab baru + URL paste
+]);
+
 session_start();
 
-require_once "../public/bootstrap.php";
+if (empty($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    header('Location: ../public/login.php');
+    exit;
+}
+
+$expected_fingerprint = md5(
+    ($_SERVER['HTTP_USER_AGENT'] ?? '') .
+    ($_SERVER['REMOTE_ADDR'] ?? '')
+);
+
+if (
+    empty($_SESSION['browser_fingerprint']) ||
+    $_SESSION['browser_fingerprint'] !== $expected_fingerprint
+) {
+    session_destroy();
+    header('Location: ../public/login.php');
+    exit;
+}
 
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-
 
 // Ambil data pembayaran + nama user dari tabel daftar
 $stmt = db()->prepare('
@@ -247,8 +271,8 @@ $pembayaranData = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-
     <script src="../module/js/setDaftar.js"></script>
+
     <!-- Font Awesome untuk ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 

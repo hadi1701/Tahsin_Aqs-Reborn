@@ -1,28 +1,31 @@
-let darkmode = localStorage.getItem('darkmode');
-const themeSwitch = document.getElementById('theme-switch');
+// darkmode.js — FIXED for Sneat Free v3.0.0
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.getElementById('darkModeToggle');
+  if (!toggle) return;
 
-const enableDarkmode = () => {
-    document.body.classList.add('darkmode');
-    localStorage.setItem('darkmode', 'active');
-};
+  const icon = toggle.querySelector('i');
+  const body = document.body;
 
-const disableDarkmode = () => {
-    document.body.classList.remove('darkmode');
-    localStorage.setItem('darkmode', '');
-};
+  // Cek tema dari localStorage atau sistem
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = savedTheme === 'dark' || (!savedTheme && systemPrefersDark);
 
-// apply saved mode saat halaman dibuka
-if (darkmode === 'active') {
-    enableDarkmode();
-}
+  // Terapkan tema awal
+  if (isDark) {
+    body.classList.add('dark-mode');
+    if (icon) icon.className = 'bx bx-sun bx-sm';
+  }
 
-// ketika tombol di-klik
-themeSwitch.addEventListener('click', () => {
-    darkmode = localStorage.getItem('darkmode');
+  // Toggle handler
+  toggle.addEventListener('click', function () {
+    const isNowDark = !body.classList.contains('dark-mode');
+    body.classList.toggle('dark-mode', isNowDark);
+    localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
 
-    if (darkmode === 'active') {
-        disableDarkmode();
-    } else {
-        enableDarkmode();
+    if (icon) {
+      icon.className = isNowDark ? 'bx bx-sun bx-sm' : 'bx bx-moon bx-sm';
     }
+  });
 });
+

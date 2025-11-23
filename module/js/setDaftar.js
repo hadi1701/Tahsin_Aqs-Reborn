@@ -62,7 +62,7 @@ $(document).ready(function(){
                     // ✅ SUKSES
                     if (response.status === "success") {
                         Swal.fire({
-                            title: '✓ Pendaftaran Berhasil!',
+                            title: 'Success',
                             text: response.message,
                             icon: 'success',
                             confirmButtonText: 'Lanjut ke Pembayaran',

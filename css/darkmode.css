@@ -1,0 +1,104 @@
+/* darkmode.css — FIXED for Sneat Free v3.0.0 */
+body.dark-mode {
+  --bs-body-bg: #121212;
+  --bs-body-color: #e0e0e0;
+  --bs-card-bg: #1e1e2f;
+  --border-color: #333;
+  --input-bg: #2a2a3f;
+  --dropdown-bg: #1e1e2f;
+  --dropdown-hover: #2d2d44;
+  --nav-bg: #1a1a2e;
+  --menu-bg: #161625;
+  --menu-hover: #25253c;
+  --menu-active: #2d2d44;
+  --text-muted: #a0a0b0;
+}
+
+/* Override bawaan Sneat */
+body.dark-mode .bg-navbar-theme,
+body.dark-mode .bg-menu-theme,
+body.dark-mode .bg-footer-theme {
+  background-color: var(--nav-bg) !important;
+  color: var(--bs-body-color) !important;
+}
+
+body.dark-mode .layout-wrapper {
+  background-color: var(--bs-body-bg) !important;
+}
+body.dark-mode .layout-page {
+  background-color: var(--bs-body-bg) !important;
+}
+body.dark-mode .content-backdrop {
+  background-color: rgba(0,0,0,0.6) !important;
+}
+
+body.dark-mode .layout-navbar,
+body.dark-mode .layout-menu,
+body.dark-mode .menu,
+body.dark-mode .menu-inner {
+  background-color: var(--nav-bg) !important;
+  color: var(--bs-body-color) !important;
+}
+
+body.dark-mode .menu-inner > .menu-item > .menu-link {
+  color: #d0d0e0 !important;
+}
+body.dark-mode .menu-inner > .menu-item:hover > .menu-link,
+body.dark-mode .menu-inner > .menu-item.open > .menu-link {
+  background-color: var(--menu-hover) !important;
+  color: #fff !important;
+}
+body.dark-mode .menu-inner > .menu-item.active > .menu-link {
+  background-color: var(--menu-active) !important;
+  color: #fff !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .card-header,
+body.dark-mode .card-body,
+body.dark-mode .breadcrumb {
+  background-color: var(--bs-card-bg) !important;
+  color: var(--bs-body-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: var(--input-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--bs-body-color) !important;
+}
+
+body.dark-mode .dropdown-menu {
+  background-color: var(--dropdown-bg) !important;
+  border-color: var(--border-color) !important;
+}
+body.dark-mode .dropdown-item {
+  color: var(--bs-body-color) !important;
+}
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus {
+  background-color: var(--dropdown-hover) !important;
+  color: #fff !important;
+}
+
+body.dark-mode .text-muted {
+  color: var(--text-muted) !important;
+}
+body.dark-mode a:not(.btn),
+body.dark-mode .nav-link {
+  color: #7e9cff !important;
+}
+body.dark-mode a:hover:not(.btn),
+body.dark-mode .nav-link:hover {
+  color: #a6c1ff !important;
+}
+
+body.dark-mode .bx {
+  color: inherit !important;
+}
+
+/* Transisi halus */
+body.dark-mode * {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}

@@ -1,9 +1,34 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 0, //habis saaat browser ditutup
+    'path' => '/',
+    'secure' => isset($_SERVER['HTTPS']),
+    'httponly' => true,
+    'samesite' => 'Strict' //proteksi akses tab baru + URL paste
+]);
+
 session_start();
 
+if (empty($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    header('Location: ../public/login.php');
+    exit;
+}
+
+$expected_fingerprint = md5(
+    ($_SERVER['HTTP_USER_AGENT'] ?? '') .
+    ($_SERVER['REMOTE_ADDR'] ?? '')
+);
+
+if (
+    empty($_SESSION['browser_fingerprint']) ||
+    $_SESSION['browser_fingerprint'] !== $expected_fingerprint
+) {
+    session_destroy();
+    header('Location: ../public/login.php');
+    exit;
+}
+
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
-
-
 
 $stmt = db()->prepare('SELECT * FROM admin');
 $stmt->execute();

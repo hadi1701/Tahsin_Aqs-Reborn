@@ -1,154 +1,127 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Tahsin Aqsyanna</title>
-    <!-- BOOTSTRAP 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<section id="about">
+  <div class="container">
+    <div class="about-header">
+      <h2>Tentang <span class="text-warning">Tahsin Aqsyanna</span></h2>
+      <p>Program Tahsin Berjenjang (Sejak 10 April 2022)</p>
+    </div>
 
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <div class="about-content">
+      <div class="about-text">
+        <p class="lead">
+          Tahsin Aqsyanna adalah kelas tahsin berjenjang dari Pra-Tahsin sampai Tahfidz yang berada di bawah naungan Rumah Al-Qur'an Aqsyanna, Ciputat Timur. Program kami bekerja sama dan menggunakan pedoman kurikulum dari Lembaga Halaqah Cinta Qur'an (HCQ). Program ini dirancang khusus untuk memperbaiki bacaan Al-Qur’an santri secara bertahap dan terukur.
+        </p>
 
-    <!-- AOS (Animate On Scroll) -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-    <!-- GOOGLE FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-
-    <!-- CUSTOM CSS -->
-    <link rel="stylesheet" href="../css/style.css">
-
-    <!-- JS Bootstrap Bundle (Popper sudah termasuk) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- AOS Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init();</script>
-</head>
-
-<body class="about-page">
-    <?php include '../component/navbar.php'; ?>
-
-    <header class="about-header mt-3">
-        <a class="brand" href="#">
-        <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <path d="M3 6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V6z" fill="rgba(255,255,255,0.06)"/>
-            <path d="M7 4v14" stroke="#fff" stroke-opacity="0.9" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M17.5 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9z" fill="rgba(124,58,237,0.9)"/>
-            </svg>
-        </div>
-        <div>
-            <h1>Tahsin Aqsyanna</h1>
-            <div class="subtitle">Rumah Al-Qur'an — Program Tahsin Berjenjang</div>
-        </div>
-        </a>
-    </header>
-
-    <main class="wrap">
-        <section class="hero">
-            <article class="card">
-                <p class="lead">
-                Tahsin Aqsyanna adalah merupakan salah satu program yang ada di Rumah Al-Qur'an Aqsyanna dan baru terbentuk pada April 2022. Tahsin Aqsyanna merupakan program berjenjang yang berjalan selama 6 bulan dengan iuran sebanyak Rp700.000,00. Ketika belajar, akan ada 10 murid per-halaqah dan 2 orang pengajar. Kami selalu mengusahakan agar murid laki-laki dan perempuan dipisah. Di akhir pertemuan akan mendapatkan sertifikat beserta dengan nilai raportnya.
-                </p>
-
-                <div class="features">
-                <div class="feature">
-                    <h4>Durasi Terstruktur</h4>
-                    <p>Program berjalan selama 6 bulan untuk memastikan progres bacaan dan penguasaan tajwid konsisten.</p>
-                </div>
-                <div class="feature">
-                    <h4>Rasio Ideal</h4>
-                    <p>10 murid per halaqah dengan 2 pengajar demi pembelajaran yang lebih intensif.</p>
-                </div>
-                <div class="feature">
-                    <h4>Lingkungan Aman</h4>
-                    <p>Pemisahan murid laki-laki dan perempuan untuk menjaga kenyamanan dan adab belajar.</p>
-                </div>
-                </div>
-            </article>
-
-            <aside class="card">
-                <div class="stats">
-                    <div class="stat">
-                        <h3>Setiap Ahad</h3>
-                        <p>Mulai jam 13.00 - 15.00 WIB</p>
-                    </div>
-                    <div class="stat">
-                        <h3>6 Bulan</h3>
-                        <p>Durasi Program</p>
-                    </div>
-                    <div class="stat">
-                        <h3>Rp 700.000</h3>
-                        <p>Iuran</p>
-                    </div>
-                    <div class="stat">
-                        <h3>10 : 2</h3>
-                        <p>Rasio Murid : Pengajar</p>
-                    </div>
-                </div>
-            </aside>
-        </section>
-        <footer>
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fa-solid fa-clock feature-icon"></i>
             <div>
-                <strong>Tahsin Aqsyanna</strong>
-                <p>Rumah Al-Qur'an Aqsyanna • Terbentuk April 2022</p>
+              <h6 class="feature-title">Durasi Terstruktur</h6>
+              <p class="feature-desc">6 bulan untuk progres konsisten</p>
             </div>
-            <a id="contact" class="btn btn-warning" href="#">Hubungi Kami</a>
-        </footer>
-    </main>
-
-    <section class="about-page section-visi-misi py-5">
-        <div class="container text-center">
-            <h2 class="section-title mb-4">Visi & Misi <span class="highlight">Tahsin Aqsyanna</span></h2>
-            <p class="section-subtitle mb-5">
-            Menjadi lembaga pembelajaran Al-Qur’an yang unggul dalam tahsin, tilawah, dan pembinaan akhlak Qur’ani.
-            </p>
-
-            <div class="row g-4 justify-content-center">
-                <!-- Visi -->
-                <div class="col-md-5">
-                    <div class="visi-card">
-                    <div class="icon-wrapper mb-3">
-                        <i class="fa-solid fa-eye"></i>
-                    </div>
-                    <h5 class="mb-3">Visi</h5>
-                    <p>
-                        Tahsin Aqsyanna sebagai Poros Penggerak Dakwah Nilai-Nilai Al-Qur'an.
-                    </p>
-                    </div>
-                </div>
-
-                <!-- Misi -->
-                <div class="col-md-5">
-                    <div class="misi-card">
-                        <div class="icon-wrapper mb-3">
-                            <i class="fa-solid fa-bullseye"></i>
-                        </div>
-                        <h5 class="mb-3">Misi</h5>
-                        <ul class="misi-list text-start">
-                            <li>Menumbuhkan kecintaan terhadap Al-Qur’an melalui pembelajaran tahsin yang menyenangkan.</li>
-                            <li>Mengajarkan kaidah tajwid dengan metode yang mudah dipahami.</li>
-                            <li>Membina peserta agar istiqamah dalam membaca dan mengamalkan Al-Qur’an.</li>
-                            <li>Mengembangkan media pembelajaran Al-Qur’an yang kreatif dan modern.</li>
-                        </ul>
-                    </div>
-                </div>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-people-group feature-icon"></i>
+            <div>
+              <h6 class="feature-title">Rasio Ideal</h6>
+              <p class="feature-desc">10 murid : 2 pengajar</p>
             </div>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-user-shield feature-icon"></i>
+            <div>
+              <h6 class="feature-title">Lingkungan Aman</h6>
+              <p class="feature-desc">Pemisahan laki-laki & perempuan</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-certificate feature-icon"></i>
+            <div>
+              <h6 class="feature-title">Sertifikat</h6>
+              <p class="feature-desc">Dengan nilai rapor</p>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
 
-    
+      <div class="about-stats">
+        <div class="stat-card">
+          <h3 class="stat-number">Setiap Ahad</h3>
+          <p class="stat-label">13.00 – 15.00 WIB</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-number">Durasi Program</h3>
+          <p class="stat-label">6 Bulan</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-number">Iuran</h3>
+          <p class="stat-label">Rp 700.000</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-number">10 : 2</h3>
+          <p class="stat-label">Murid : Pengajar</p>
+        </div>
+      </div>
+    </div>
 
-    <?php include '../component/footer.php'; ?>
+    <!-- Visi & Misi -->
+    <!-- Visi & Misi -->
+    <div class="visi-misi">
+      <!-- Kolom Kiri: Visi + Value (bertumpuk) -->
+      <div class="visi-container">
+        <!-- Visi Card -->
+        <div class="visi-card">
+          <i class="fa-solid fa-book-quran card-icon d-flex justify-content-center"></i>
+          <h3 class="card-title text-center">Visi</h3>
+          <p class="card-text text-center">
+            Tahsin Aqsyanna sebagai Poros Penggerak Dakwah <br>
+            Nilai-Nilai Al-Qur'an.
+          </p>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init();</script>
-</body>
-</html>
+        <!-- Value Section (tetap dalam kolom kiri, di bawah visi) -->
+        <div class="value-section">
+          <h4 class="text-center mb-4" style="color: #cbd5e1; font-weight: 600;">
+            <i class="fa-solid fa-shield-halved me-1" style="color: var(--primary-yellow);"></i>
+            Nilai Dasar Kami
+          </h4>
+          <div class="value-grid">
+            <!-- 5 Value Cards (2 kolom, compact) -->
+            <div class="value-item">
+              <strong class="d-block text-primary" style="color: var(--primary-yellow) !important;">1. Pembelajar</strong>
+              <small>Setiap pribadi memiliki pola pikir dan semangat untuk terus bertumbuh.</small>
+            </div>
+            <div class="value-item">
+              <strong class="d-block text-primary" style="color: var(--primary-yellow) !important;">2. Beradab Berakhlak</strong>
+              <small>Menempatkan sesuatu pada tempatnya sesuai syariat.</small>
+            </div>
+            <div class="value-item">
+              <strong class="d-block text-primary" style="color: var(--primary-yellow) !important;">3. Peduli</strong>
+              <small>Keterlibatan aktif terhadap kondisi sekitar.</small>
+            </div>
+            <div class="value-item">
+              <strong class="d-block text-primary" style="color: var(--primary-yellow) !important;">4. Berdampak</strong>
+              <small>Menjadi pengaruh kuat yang mendatangkan akibat positif.</small>
+            </div>
+            <div class="value-item">
+              <strong class="d-block text-primary" style="color: var(--primary-yellow) !important;">5. Kolaboratif</strong>
+              <small>Sikap saling bekerjasama untuk mencapai tujuan bersama.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Misi -->
+      <div class="misi-card">
+        <i class="fa-solid fa-bullseye card-icon d-flex justify-content-center"></i>
+        <h3 class="card-title text-center">Misi</h3>
+        <ul class="misi-list">
+          <li>Menyelenggarakan pembelajaran tahsin Al-Quran yang mudah dipahami dan berfokus pada pengamalan adab dan karakter muslim dalam kehidupan sehari-hari.</li>
+          <li>Membangun keteladanan agar menjadi pengaruh bagi lingkungan dan masyarakat umum.</li>
+          <li>Membangun kolaborasi dengan program-program Rumah Quran Aqsyanna dan komunitas luar yang saling mendukung serta berkomitmen untuk memberikan manfaat nyata yang lebih luas.</li>
+          <li>Membangun program yang mandiri, profesional, berdaya saing dan mudah diakses oleh seluruh lapisan masyarakat.</li>
+          <li>Mencetak kader-kader kompeten untuk generasi selanjutnya.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

@@ -21,6 +21,7 @@ try {
 
     // reset session lama
     session_unset();
+    session_regenerate_id(true); //cegah fixation
 
     /* ==========================
        CEK LOGIN ADMIN
@@ -30,11 +31,17 @@ try {
     $admin = $qAdmin->fetch(PDO::FETCH_ASSOC);
 
     if ($admin && password_verify($password, $admin['password'])) {
-        $_SESSION['admin_id'] = $admin['id'];
-        $_SESSION['username'] = $admin['username'];
-        $_SESSION['is_admin'] = true;
-        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_logged_in']    = true;
+        $_SESSION['admin_id']           = $admin['id'];
+        $_SESSION['username']           = $admin['username'];
+        $_SESSION['is_admin']           = true;
 
+        // fingerprint session
+        $_SESSION['browser_fingerprint'] = md5(
+            $_SERVER['HTTP_USER_AGENT'] . ($_SERVER['REMOTE_ADDR'] ?? '')
+        );
+
+        session_regenerate_id(true); //ID baru setelah login
         echo json_encode(['status' => 'admin']);
         exit;
     }
@@ -52,10 +59,18 @@ try {
     }
 
     // simpan session user
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['is_admin'] = false;
     $_SESSION['user_logged_in'] = true;
+    $_SESSION['user_id']        = $user['id'];
+    $_SESSION['username']       = $user['username'];
+    $_SESSION['is_admin']       = false;
+
+    // fingerprint proteksi anti URL copy-paste
+    $_SESSION['browser_fingerprint'] = md5(
+        ($_SERVER['HTTP_USER_AGENT'] ?? '') .
+        ($_SERVER['REMOTE_ADDR'] ?? '')
+    );
+
+    session_regenerate_id(true);
 
     /* ==========================
        CEK STATUS PEMBAYARAN

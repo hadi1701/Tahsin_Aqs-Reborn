@@ -79,29 +79,9 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-      /* Highlight error */
-    /* .is-invalid {
-        border-color: #e74a3b !important;
-        box-shadow: 0 0 0 0.2rem rgba(231, 74, 59, 0.25) !important;
-    }
-    
-    /* Pesan error di bawah input */
-    /* .invalid-feedback {
-        display: block !important;
-        width: 100%;
-        margin-top: 0.25rem;
-        font-size: 0.875rem;
-        color: #e74a3b;
-        font-weight: 500;
-    } */
-    
-    /* Spinner kecil di tombol */
-    /* .spinner-border {
-        width: 1rem;
-        height: 1rem;
-        margin-right: 0.5rem;
-    } */ 
-
+      .authentication-wrapper.authentication-basic .authentication-inner {
+          max-width: 700px !important;
+      }
     </style>
   </head>
 
@@ -252,7 +232,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
 
               <p class="text-center">
                 <span>Already have an account?</span>
-                <a href="auth-login-basic.html">
+                <a href="login.php">
                   <span>Sign in instead</span>
                 </a>
               </p>
