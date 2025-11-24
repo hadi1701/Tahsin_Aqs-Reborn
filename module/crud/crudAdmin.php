@@ -100,8 +100,22 @@ try {
         $id = $input['id'] ?? '';
         $nama = $input['nama'] ?? '';
 
-        if (empty($id)) {
-            echo json_encode(['status' => 'error', 'message' => 'ID tidak ditemukan']);
+        if (empty($id) || empty($nama)) {
+            echo json_encode(['status' => 'error', 'message' => 'ID atau nama tidak ditemukan']);
+            exit;
+        }
+
+        $cek = $pdo->prepare("SELECT id FROM admin WHERE id = :id AND nama = :nama LIMIT 1");
+        $cek->execute([
+            ':id' => $id,
+            ':nama' => $nama
+        ]);
+
+        if ($cek->rowCount() === 0) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Data tidak ditemukan atau ID & Nama tidak cocok'
+            ]);
             exit;
         }
 
