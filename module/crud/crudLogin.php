@@ -58,20 +58,6 @@ try {
         exit;
     }
 
-    // simpan session user
-    $_SESSION['user_logged_in'] = true;
-    $_SESSION['user_id']        = $user['id'];
-    $_SESSION['username']       = $user['username'];
-    $_SESSION['is_admin']       = false;
-
-    // fingerprint proteksi anti URL copy-paste
-    $_SESSION['browser_fingerprint'] = md5(
-        ($_SERVER['HTTP_USER_AGENT'] ?? '') .
-        ($_SERVER['REMOTE_ADDR'] ?? '')
-    );
-
-    session_regenerate_id(true);
-
     /* ==========================
        CEK STATUS PEMBAYARAN
     ========================== */
@@ -87,18 +73,34 @@ try {
 
     // belum bayar
     if ((int)$payment['is_paid'] === 0) {
+        $_SESSION['pending_payment'] = $user['id'];
         echo json_encode(['status' => 'unpaid']);
         exit;
     }
 
     // sudah bayar tapi menunggu validasi
     if ((int)$payment['is_paid'] === 1 && (int)$payment['is_active'] === 0) {
+        $_SESSION['pending_payment'] = $user['id'];
         echo json_encode(['status' => 'waiting']);
         exit;
     }
 
     // sudah bayar dan aktif
     if ((int)$payment['is_paid'] === 1 && (int)$payment['is_active'] === 1) {
+        // simpan session user
+        $_SESSION['user_logged_in'] = true;
+        $_SESSION['user_id']        = $user['id'];
+        $_SESSION['username']       = $user['username'];
+        $_SESSION['is_admin']       = false;
+    
+        // fingerprint proteksi anti URL copy-paste
+        $_SESSION['browser_fingerprint'] = md5(
+            ($_SERVER['HTTP_USER_AGENT'] ?? '') .
+            ($_SERVER['REMOTE_ADDR'] ?? '')
+        );
+    
+        session_regenerate_id(true);
+        
         echo json_encode(['status' => 'user']);
         exit;
     }

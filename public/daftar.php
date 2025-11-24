@@ -3,7 +3,7 @@ if(!isset($_SESSION)){
     session_start();
 }
 
-require_once "../public/bootstrap.php";
+require_once "bootstrap.php";
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
 $site_root = $_SESSION["site_root"];
 
@@ -40,7 +40,7 @@ $rowDaftar = $stmt->fetchAll(db()::FETCH_ASSOC);
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Registertrasi</title>
+    <title>Registrasi</title>
 
     <meta name="description" content="" />
 

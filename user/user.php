@@ -36,6 +36,17 @@ $site_root = $_SESSION["site_root"];
 
 $pdo = db();
 
+$stmtStatus = $pdo->prepare("SELECT is_active FROM pembayaran WHERE id =? ORDER BY id DESC LIMIT 1");
+$stmtStatus->execute([$_SESSION['user_id']]);
+$payment = $stmtStatus->fetch(PDO::FETCH_ASSOC);
+
+if(!$payment || $payment['is_active'] != 1){
+    session_unset();
+    session_destroy();
+    header("Location: ../public/login.php");
+    exit;
+}
+
 $stmt = $pdo->prepare("SELECT username FROM daftar WHERE id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -60,7 +71,7 @@ $role = 'user';
     <style>
         body {
         background-color: #000000ff;
-        color: #fff;
+        color: #ffffffff;
         font-family: 'Poppins', sans-serif;
         }
 
@@ -96,11 +107,11 @@ $role = 'user';
         }
 
         .info-card {
-        background-color: #000000ff;
-        border: 2px solid #0058aaff;
+        background-color: #ff8800ff;
+        border: 2px solid #ff8800ff;
         border-radius: 15px;
         padding: 25px;
-        color: #044d91ff;
+        color: #000000ff;
         text-align: center;
         transition: 0.3s;
         }
@@ -128,7 +139,7 @@ $role = 'user';
     <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top">
         <div class="container">
         <a class="navbar-brand fw-bold" href="#">
-            Tahsin<span class="text-warning">Aqsyanna.</span>
+            Tahsin<span class="text-warning"><i>Aqsyanna.</i></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>

@@ -1,17 +1,36 @@
 <?php
 session_start();
 
+require_once 'bootstrap.php';
 require_once $_SESSION["dir_root"] . '/module/dbconnect.php';
+$site_root = $_SESSION['site_root'];
 
 $error = '';
+$user_id = 0;
 
 // ---------------------------
 // 1️⃣ Validasi login user
 // ---------------------------
-if (!isset($_SESSION['user_id'])) {
-    $error = 'Anda belum bisa login. Silakan ke halaman pembayaran terlebih dahulu.';
+if (isset($_SESSION['pending_payment'])) {
+    $user_id = $_SESSION['pending_payment'];
+}
+elseif (isset($_SESSION['user_id'])) {
+    // fallback kalau pending_payment hilang
+    $user_id = $_SESSION['user_id'];
+}
+else {
+    $error = 'Anda belum bisa mengakses halaman ini.';
 }
 
+// kalau error, hentikan akses
+if ($error !== '') {
+    echo "<script>
+        Swal.fire('Gagal', '$error', 'error').then(()=>{
+            window.location.href='$site_root/login.php';
+        });
+    </script>";
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +62,7 @@ if (!isset($_SESSION['user_id'])) {
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Login Form</title>
+    <title>Pembayaran Form</title>
 
     <meta name="description" content="" />
 
